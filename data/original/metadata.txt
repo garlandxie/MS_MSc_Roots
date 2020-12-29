@@ -1,0 +1,87 @@
+Metadata 
+
+#########################################################################################################
+file name: above_biomass.csv
+
+column name: data type: description (including units of measurement if appropriate)
+----------------------------------------------------------------------------------------------------------
+typed_by_dry: character: the ID of the recorder
+typed_by_fresh: character: the ID of the recorder
+recorded_by_fresh: character: the ID of the recorder
+process_date_dry_ymd: character: date of when the sample was processed (year-month-date format)
+process_date_fresh_ymd: character: date of when the sample was processed (year-month-date format)
+block: factor: block effect (five levels)
+pot_ID: character: unique identifier for each pot 
+treatment: factor: watering regime treatment (two levels: WD and WW)
+above_fresh_g: numeric: aboveground fresh biomass (measured in grams)
+above_dry_g: numeric aboveground dry biomass (measured in grams)
+remarks: character: additional comments
+
+#########################################################################################################
+file name: below_biomass.csv
+
+column name: data type: description (including units of measurement if appropriate)
+----------------------------------------------------------------------------------------------------------
+typed_by_dry: character: the ID of the recorder
+recorder_by_dry: character: the ID of the recorder
+record_date_ymd: date of when belowground dry biomass was recorded (year-month-date format)
+block: factor: block effect (five levels)
+pot_ID: character: unique identified for each pot 
+treatment: factor: watering regime treatment (two levels: WD and WW)
+fine/coarse: character: fine (<2 mm diameter) or coarse (>2 mm diameter) root classification
+envelope_num: integer: envelope number that holds either a portion of roots or the entire root sample 
+below_dry_g: numeric: belowground dry biomass (measured in grams)
+remarks: character: additional comments
+
+##########################################################################################################
+file name: ij_rhizo_output.csv
+
+column name: data type: description (including units of measurement if appropriate)
+----------------------------------------------------------------------------------------------------------
+processed_by: character: ID of the data analyst
+block: factor: block effect (five levels: B1-B5)
+trt: factor: watering regime treatment (two levels: WW and WD)
+sampled: character: sampling unit for the image root analysis (at the pot-level)
+volume_cm_cubed: character: volume of the pot (measured at cubic centimeters)
+raw_total_length_mm: numeric: total length of fine roots (measured in millimeters)
+mean_radius_mm: numeric: mean root diameter (measured in millimeters)
+dpi: numeric: resolution of the image analysis set by the flatbed scanner (Epson Perfection V800)
+border_pixels: numeric: the number of pixels to remove from the border of a given root image 
+particle_clean_size: numeric: the size of the smallest particle to be removed set by the IJ Rhizo software
+circularity: numeric: circularty of particles set by the IJ Rhizo software
+min_threshold: numeric: minimum threshold to detect fine roots set by the IJ Rhizo software
+remarks: additional comments
+
+##########################################################################################################
+file name: max_root_depth.csv
+
+column name: data type: description (including units of measurement if appropriate)
+----------------------------------------------------------------------------------------------------------
+type_by: character: ID of the recorder
+block: factor: block effect (five levels: B1-B5)
+pot_ID: character: unique identifier for each pot
+treatment: factor: watering regime treatment (levels: WW and WD)
+max_root_depth_cm: numeric: maximum rooting depth (measured in centimeters)
+remarks: character: additional comments
+
+##########################################################################################################
+file name: pot_weight.csv
+
+column name: data type: description (including units of measurement if appropriate)
+----------------------------------------------------------------------------------------------------------
+recorded_by_mdy: character: date of when the data was recorded on the field sheet (month-date-year format)
+type_by_mdy: character: date of when the data was typed on the database (month-date-year format)
+session: character: session number for running the water balance measurements 
+treatment: factor: watering regime treatment (two levels: WW and WD)
+pot_ID: character: unique identifier for each pot
+sample_month: integer: month of when that particular pot was weighed
+sample_day: integer: day of when that particular pot the pot was weighted
+sample_year: integer: year of when that particular pot the pot was weighted
+period: character: the period for the simple water balance model (T1 - initial weight, T2 - ten-minute 
+wait time, T3 - after 24 hours, T4 - after 48 hours)
+weight_lb: numeric: pot weight in pounds (lbs)
+weight_grams: numeric: pot weight in grams
+remarks: character: additional comments
+
+
+
