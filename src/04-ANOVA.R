@@ -129,7 +129,13 @@ ref_grid(total_ret_aov)@grid
 # type II sum of squares to account for unbalanced design: avg_ET_aov
 Anova(total_ret_aov, type = "II")
 
-# estimated marginal means (least square means): total_ET_lsm
+# estimated marginal means (least square means): total_ret_lsm
+total_ret_lsm <- 
+  lsmeans(
+    total_ret_aov, 
+    specs = "spp", 
+    by = "treatment"
+  )
 
 # multiple pairwise comparisons using Tukey HSD test
 # shows letters for plotting purposes 
@@ -142,7 +148,7 @@ cmp_RET <-
      adjust = "tukey"
      )  +
   
-  labs(x = "Estimated Least-Squares Mean (Stormwater Capture (mL))", 
+  labs(x = "Estimated Least-Squares Mean (Total Stormwater Capture (g))", 
        y = NULL
        ) + 
   
@@ -210,7 +216,7 @@ cmp_ET <-
     adjust = "tukey"
     ) + 
   
-  labs(x = "Estimated Least-Squares Mean (Evapotranspiration (mL))", 
+  labs(x = "Estimated Least-Squares Mean (Total Evapotranspiration (g))", 
        y = NULL
        ) + 
   
