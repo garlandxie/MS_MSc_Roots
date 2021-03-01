@@ -55,9 +55,6 @@ EF_WD <- traits_EF %>%
   ungroup() %>%
   as.data.frame() 
 
-# remove an outlier
-EF_WD_O <- EF_WD[-6, ]
-
 # linear mixed effect models: water capture (dry treatment) --------------------
 
 lmm_total_ret_WD <- lmer(
@@ -110,7 +107,7 @@ lmm_total_ret_WW <- lmer(
 # five levels for block effect
 summary(lmm_total_ret_WW)
 
-# multiple regression: water capture for wet treatment (without outliers) ------
+# multiple regression: water capture for wet treatment -------------------------
 
 # model fitting
 lm_total_ret_WW <- lm(
@@ -135,15 +132,15 @@ lm_total_ret_WW <- lm(
 summary(lm_total_ret_WW)
 
 # check for model diagnostics
-plot(lm_total_ET_WW, c(1)) # check for linearity
-plot(lm_total_ET_WW, c(2)) # check for normality
-plot(lm_total_ET_WW, c(3)) # check for homogeneity of variance
-plot(lm_total_ET_WW, c(5)) # check for influential outliers
+plot(lm_total_ret_WW, c(1)) # check for linearity
+plot(lm_total_ret_WW, c(2)) # check for normality
+plot(lm_total_ret_WW, c(3)) # check for homogeneity of variance
+plot(lm_total_ret_WW, c(5)) # check for influential outliers
 
 # check for multicollinearity
 vif(lm_total_ret_WW)
 
-# multiple regression: water capture for dry treatment (with outliers) ---------
+# multiple regression: water capture for dry treatment -------------------------
 
 # model fitting
 lm_total_ret_WD <- lm(
@@ -175,165 +172,6 @@ plot(lm_total_ret_WD, c(5)) # check for influential outliers
 
 # check for multicollinearity
 vif(lm_total_ret_WD)
-
-# multiple regression: water capture for dry treatment (without outliers) ------
-
-# model fitting
-lm_total_ret_WD_O <- lm(
-  formula = 
-    
-    # response var
-    total_water_capture ~ 
-    
-    # fixed vars
-    scale(srl) +
-    scale(mean_radius_mm) + 
-    scale(rld) + 
-    scale(rmf) + 
-    scale(max_root_depth_cm) + 
-    
-    # covariate var 
-    scale(plant_size), 
-  
-  data = EF_WD_O)
-
-# get coefficients, p-values, R-squared values, degrees of freedom
-summary(lm_total_ret_WD_O)
-
-# check for model diagnostics
-plot(lm_total_ret_WD_O, c(1)) # check for linearity
-plot(lm_total_ret_WD_O, c(2)) # check for normality
-plot(lm_total_ret_WD_O, c(3)) # check for homogeneity of variance
-plot(lm_total_ret_WD_O, c(5)) # check for influential outliers
-
-# check for multicollinearity
-vif(lm_total_ret_WD_O)
-
-# plot: total water capture - WD  ----------------------------------------------
-
-plot_WD <- lm_total_ret_WD %>%
-
-# convert lm object into a tibble
-tidy() %>%
-  
-  # remove random effect coefficient
-  filter(term != "sd__(Intercept)") %>%
-  
-  # rename 
-  mutate(term = case_when(
-    term == "scale(rld)" ~ "Root length density",
-    term == "scale(srl)" ~ "Specific root length",
-    term == "scale(max_root_depth_cm)" ~ "Maximum root depth",
-    term == "scale(plant_size)" ~ "Total biomass",
-    term == "scale(mean_radius_mm)" ~ "Mean root diameter",
-    term == "scale(rmf)" ~ "Root mass fraction",
-    TRUE ~ term)) %>%
-  
-  slice(match(c(
-    "Root length density",
-    "Root mass fraction",
-    "Total biomass", 
-    "Maximum root depth",
-    "Mean root diameter", 
-    "Specific root length"
-  ),
-  term)) %>%
-  
-  # regression coefficient plot
-  ggcoefstats(statistic = "t", # t-statistic value
-              conf.method = "profile", 
-              stats.labels = FALSE,
-              conf.int = TRUE,
-              point.args = c(color = "red")
-  )+ 
-  
-  labs(title = NULL,
-       x = "Total Stormwater Capture (mL)", 
-       y = NULL)
-
-plot_WD_out <- lm_total_ret_WD_out %>%
-  
-  # convert lm object into a tibble
-  tidy() %>%
-  
-  # remove random effect coefficient
-  filter(term != "sd__(Intercept)") %>%
-  
-  # rename 
-  mutate(term = case_when(
-    term == "scale(rld)" ~ "Root length density",
-    term == "scale(srl)" ~ "Specific root length",
-    term == "scale(max_root_depth_cm)" ~ "Maximum root depth",
-    term == "scale(plant_size)" ~ "Total biomass",
-    term == "scale(mean_radius_mm)" ~ "Mean root diameter",
-    term == "scale(rmf)" ~ "Root mass fraction",
-    TRUE ~ term)) %>%
-  
-  slice(match(c(
-    "Root length density",
-    "Root mass fraction",
-    "Total biomass", 
-    "Maximum root depth",
-    "Mean root diameter", 
-    "Specific root length"
-  ),
-  term)) %>%
-  
-  # regression coefficient plot
-  ggcoefstats(statistic = "t", # t-statistic value
-              conf.method = "profile", 
-              stats.labels = FALSE,
-              conf.int = TRUE,
-              point.args = c(color = "red")
-  )+ 
-  
-  labs(title = NULL,
-       x = "Total Stormwater Capture (mL)", 
-       y = NULL)
-
-# plot: total water capture - WW  ----------------------------------------------
-
-plot_WW <- lm_total_ret_WW %>%
-  
-  # convert lm object into a tibble
-  tidy() %>%
-  
-  # remove random effect coefficient
-  filter(term != "sd__(Intercept)") %>%
-  
-  # rename 
-  mutate(term = case_when(
-    term == "scale(rld)" ~ "Root length density",
-    term == "scale(srl)" ~ "Specific root length",
-    term == "scale(max_root_depth_cm)" ~ "Maximum root depth",
-    term == "scale(plant_size)" ~ "Total biomass",
-    term == "scale(mean_radius_mm)" ~ "Mean root diameter",
-    term == "scale(rmf)" ~ "Root mass fraction",
-    TRUE ~ term)) %>%
-  
-  slice(match(c(
-    "Root length density",
-    "Root mass fraction",
-    "Total biomass", 
-    "Maximum root depth",
-    "Mean root diameter", 
-    "Specific root length"
-  ),
-  term)) %>%
-  
-  # regression coefficient plot
-  ggcoefstats(statistic = "t", # t-statistic value
-              conf.method = "profile", 
-              stats.labels = FALSE,
-              conf.int = TRUE,
-              point.args = c(color = "blue")
-  )+ 
-  
-  labs(title  = NULL,
-       x      = "Total Water Capture (g)", 
-       y      = NULL)
-
-# table - water capture --------------------------------------------------------
 
 # save to disk -----------------------------------------------------------------
 
